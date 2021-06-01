@@ -1,0 +1,86 @@
+version: "3"
+services:
+  ucd-library:
+    build: library
+    environment:
+      MONGO_HOST: ucd-library-mongodb
+    depends_on:
+      - ucd-library-mongodb
+    ports:
+      - "8080:8080"
+
+  ucd-library-mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=library-db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./storage/library-init-mongo.js:/docker-entrypoint-initdb.d/library-init-mongo.js:ro
+      - ./storage/ucd-library-db/ucd-data.js:/docker-entrypoint-initdb.d/ucd-data.js
+      - ./storage/ucd-library-db/mongo-volume:/data/db
+    restart: always
+
+  tcd-library:
+    build: library
+    environment:
+      MONGO_HOST: tcd-library-mongodb
+    depends_on:
+      - tcd-library-mongodb
+    ports:
+      - "8081:8080"
+
+  tcd-library-mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=library-db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./storage/library-init-mongo.js:/docker-entrypoint-initdb.d/library-init-mongo.js:ro
+      - ./storage/tcd-library-db/tcd-data.js:/docker-entrypoint-initdb.d/tcd-data.js
+      - ./storage/tcd-library-db/mongo-volume:/data/db
+    restart: always
+
+  dcu-library:
+    build: library
+    environment:
+      MONGO_HOST: dcu-library-mongodb
+    depends_on:
+      - dcu-library-mongodb
+    ports:
+      - "8082:8080"
+
+  dcu-library-mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=library-db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./storage/library-init-mongo.js:/docker-entrypoint-initdb.d/library-init-mongo.js:ro
+      - ./storage/dcu-library-db/dcu-data.js:/docker-entrypoint-initdb.d/dcu-data.js
+      - ./storage/dcu-library-db/mongo-volume:/data/db
+    restart: always
+
+    users:
+      build: registry
+      environment:
+        MONGO_HOST: users_mongodb
+      depends_on: 
+        - users_mongodb
+      ports:
+        - "8083:8080"
+
+  users-mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=users-db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./storage/users-db/users-init-mongo.js:/docker-entrypoint-initdb.d/users-init-mongo.js:ro
+      - ./storage/users-db/users-data.js:/docker-entrypoint-initdb.d/users-data.js
+      - ./storage/users-db/mongo-volume:/data/db
+    restart: always
+

@@ -1,0 +1,6 @@
+ie/ucdconnect/distLib/core/AbstractBook.class
+ie/ucdconnect/distLib/core/RequestInfo.class
+ie/ucdconnect/distLib/core/CreateBookRequest.class
+ie/ucdconnect/distLib/core/LibraryInfo.class
+ie/ucdconnect/distLib/core/UpdateBookRequest.class
+ie/ucdconnect/distLib/core/UserRequest.class
